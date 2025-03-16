@@ -1,11 +1,18 @@
-document.getElementById('UserForm').addEventListener('submit', function(event) {
+document.getElementById('userform').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const name = document.getElementById('Name').value;
-    const email = document.getElementById('Email').value;
-    const password = document.getElementById('Password').value;
-    const dob = document.getElementById('Dob').value;
-    const terms = document.getElementById('Terms').checked;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+    const terms = document.getElementById('terms').checked;
+
+    // Age validation
+    const age = calculateAge(dob);
+    if (age < 18 || age > 55) {
+        alert("Your age must be between 18 and 55 years.");
+        return;
+    }
 
     if (!terms) {
         alert("You must agree to the terms and conditions.");
@@ -20,9 +27,23 @@ document.getElementById('UserForm').addEventListener('submit', function(event) {
     displayStoredData();
 });
 
+function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // Adjust if the birthday hasn't occurred this year yet
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        return age - 1;
+    }
+
+    return age;
+}
+
 function displayStoredData() {
     const storedData = JSON.parse(localStorage.getItem('users')) || [];
-    const tableBody = document.getElementById('TableBody');
+    const tableBody = document.getElementById('tablebody');
 
     tableBody.innerHTML = '';
 
@@ -44,4 +65,3 @@ function displayStoredData() {
 
 // Display stored data on page load
 window.onload = displayStoredData;
-
