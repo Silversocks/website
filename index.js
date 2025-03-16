@@ -48,7 +48,7 @@ function displayStoredData() {
     tableBody.innerHTML = '';
 
     if (storedData.length > 0) {
-        storedData.forEach(user => {
+        storedData.slice().reverse().forEach(user => {
             const row = `<tr>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
